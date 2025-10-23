@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 const API_KEY = import.meta.env.VITE_APP_API_KEY
 import './App.css'
+import CoinInfo from "./Components/CoinInfo"
 
 function App() {
   const [list, setList] = useState(null)
@@ -29,7 +30,11 @@ function App() {
             //   coinData.Algorithm !== "N/A" && coinData.ProofType !== "N/A"
             // )
             .map(coinData => (
-              <li key={coinData.FullName}>{coinData.FullName}</li>
+              <CoinInfo
+              image={coinData.ImageUrl}
+              name={coinData.FullName}
+              symbol={coinData.Name}
+            />
             ))}
         </ul>
     </div>
