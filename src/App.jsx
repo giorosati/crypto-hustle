@@ -1,30 +1,40 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 const API_KEY = import.meta.env.VITE_APP_API_KEY
 import './App.css'
 
 function App() {
-  const [list, setlist] = useState(null)
-  const baseUrl = 'https://min-api.cryptocompare.com/data/top/totalvolfull';
-  const params = {"limit":"10","tsym":"USD","API":API_KEY};
-  const url = new URL(baseUrl);
-  url.search = new URLSearchParams(params).toString();
+  const [list, setList] = useState(null)
+  
   useEffect(() => {
-    fetchAllCoinData() => {
-      fetch(url, options)
-      .then((response) => response.json())
-      .then((json) => console.log(json))
-      .catch((err) => console.log(err));
+    const fetchAllCoinData = async () => {
+      const response = await fetch(
+      "https://min-api.cryptocompare.com/data/top/totaltoptiervol?limit=10&assetClass=ALL&tsym=usd&api_key="
+    + API_KEY
+     )
+    const json = await response.json()
+    setList(json)
     }
+    fetchAllCoinData().catch(console.error)
+    }, [])
 
-}, [])
-
+  // avoid accessing properties on null before data is loaded
+  // console.log(list?.Data)
+  
   return (
-    <>
-      <div>
-     
-      </div>
+    <div className="whole-page">
+      <h1>My Crypto List</h1>
+        <ul>
+          {(list?.Data ?? [])
+            .map(data => data.CoinInfo)
+            .filter(coinData =>
+              coinData.Algorithm !== "N/A" && coinData.ProofType !== "N/A"
+            )
+            .map(coinData => (
+              <li key={coinData.FullName}>{coinData.FullName}</li>
+            ))}
+        </ul>
+    </div>
       
-    </>
   )
 }
 
