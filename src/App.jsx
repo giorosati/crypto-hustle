@@ -17,8 +17,7 @@ function App() {
     fetchAllCoinData().catch(console.error)
     }, [])
 
-  // avoid accessing properties on null before data is loaded
-  // console.log(list?.Data)
+  console.log(list?.Data)
   
   return (
     <div className="whole-page">
@@ -26,9 +25,9 @@ function App() {
         <ul>
           {(list?.Data ?? [])
             .map(data => data.CoinInfo)
-            .filter(coinData =>
-              coinData.Algorithm !== "N/A" && coinData.ProofType !== "N/A"
-            )
+            // .filter(coinData =>
+            //   coinData.Algorithm !== "N/A" && coinData.ProofType !== "N/A"
+            // )
             .map(coinData => (
               <li key={coinData.FullName}>{coinData.FullName}</li>
             ))}
